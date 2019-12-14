@@ -1,7 +1,10 @@
 package fr.geeklegend.vylaria.uhcrun;
 
 import fr.geeklegend.vylaria.uhcrun.config.Config;
-import fr.geeklegend.vylaria.uhcrun.game.*;
+import fr.geeklegend.vylaria.uhcrun.game.BorderManager;
+import fr.geeklegend.vylaria.uhcrun.game.CageManager;
+import fr.geeklegend.vylaria.uhcrun.game.GameManager;
+import fr.geeklegend.vylaria.uhcrun.game.GameState;
 import fr.geeklegend.vylaria.uhcrun.listeners.manager.ListenersManager;
 import fr.geeklegend.vylaria.uhcrun.schedulers.*;
 import fr.geeklegend.vylaria.uhcrun.scoreboard.ScoreboardManager;
@@ -32,7 +35,6 @@ public class VylariaUHCRun extends JavaPlugin
     private GameManager gameManager;
     private BorderManager borderManager;
     private CageManager cageManager;
-    private WinManager winManager;
 
     private BorderScheduler borderScheduler;
     private BorderTimeScheduler borderTimeScheduler;
@@ -51,6 +53,10 @@ public class VylariaUHCRun extends JavaPlugin
     public void onEnable()
     {
         instance = this;
+
+        executorMonoThread = Executors.newScheduledThreadPool(16);
+        scheduledExecutorService = Executors.newScheduledThreadPool(1);
+        scoreboardManager = new ScoreboardManager();
 
         config = new Config();
         config.create("config");
@@ -100,10 +106,14 @@ public class VylariaUHCRun extends JavaPlugin
         config.getDefaultConfig().addDefault("setups.game.gamemode", "survival");
         config.saveDefaultConfig();
 
-        executorMonoThread = Executors.newScheduledThreadPool(16);
-        scheduledExecutorService = Executors.newScheduledThreadPool(1);
-
         gameState = GameState.WAITING;
+
+        tablist = new Tablist();
+
+        gameManager = new GameManager();
+        gameManager.load();
+        borderManager = new BorderManager();
+        cageManager = new CageManager();
 
         borderScheduler = new BorderScheduler();
         borderTimeScheduler = new BorderTimeScheduler();
@@ -112,17 +122,6 @@ public class VylariaUHCRun extends JavaPlugin
         pvpScheduler = new PvPScheduler();
         startScheduler = new StartScheduler();
         timeScheduler = new TimeScheduler();
-        winScheduler = new WinScheduler();
-
-        borderManager = new BorderManager();
-        cageManager = new CageManager();
-        scoreboardManager = new ScoreboardManager();
-        winManager = null;
-
-        tablist = new Tablist();
-
-        gameManager = new GameManager();
-        gameManager.load();
 
         worldUtils = new WorldUtils();
         worldUtils.loadSchematic(new Location(Bukkit.getWorld(config.getDefaultConfig().getString("game.world.name")),
@@ -188,11 +187,6 @@ public class VylariaUHCRun extends JavaPlugin
     public CageManager getCageManager()
     {
         return cageManager;
-    }
-
-    public WinManager getWinManager()
-    {
-        return winManager;
     }
 
     public BorderScheduler getBorderScheduler()

@@ -46,7 +46,6 @@ public class PlayerDeathListener implements Listener
 			{
 				if (!winScheduler.isRunning())
 				{
-					WinScheduler winScheduler = new WinScheduler();
 					winScheduler.setRunning(true);
 					winScheduler.setPlayer(killer);
 					winScheduler.runTaskTimer(VylariaUHCRun.getInstance(), 20L, 20L);

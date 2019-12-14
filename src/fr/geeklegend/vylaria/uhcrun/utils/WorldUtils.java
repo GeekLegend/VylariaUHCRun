@@ -1,16 +1,5 @@
 package fr.geeklegend.vylaria.uhcrun.utils;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.lang.reflect.Field;
-
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-
 import com.sk89q.worldedit.EditSession;
 import com.sk89q.worldedit.MaxChangedBlocksException;
 import com.sk89q.worldedit.Vector;
@@ -25,9 +14,23 @@ import com.sk89q.worldedit.math.transform.AffineTransform;
 import com.sk89q.worldedit.regions.Region;
 import com.sk89q.worldedit.world.World;
 import com.sk89q.worldedit.world.registry.WorldData;
+import fr.geeklegend.vylaria.uhcrun.VylariaUHCRun;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.configuration.file.FileConfiguration;
+
+import java.io.*;
+import java.lang.reflect.Field;
 
 public class WorldUtils
 {
+
+    private FileConfiguration config;
+
+    public WorldUtils()
+    {
+        this.config = VylariaUHCRun.getInstance().getDefaultConfig();
+    }
 
     public void copyFolder(File src, File dest) throws IOException
     {
@@ -117,7 +120,7 @@ public class WorldUtils
     {
         File file = new File("./plugins/WorldEdit/schematics/" + name + ".schematic");
         Vector to = new Vector(location.getX(), location.getY(), location.getZ());
-        World weWorld = new BukkitWorld(Bukkit.getWorld("world"));
+        World weWorld = new BukkitWorld(Bukkit.getWorld(config.getString("game.world.name")));
         WorldData worldData = weWorld.getWorldData();
         try
         {

@@ -75,7 +75,11 @@ public class GameManager
 
     public void loadBiomes()
     {
-        biomes.add("PLAINS");
+        biomes.add("jungle");
+        biomes.add("mountains");
+        biomes.add("desert");
+        biomes.add("savanna");
+        biomes.add("badlands");
     }
 
     public void preGameSetup()

@@ -21,7 +21,6 @@ public class WinScheduler extends BukkitRunnable
 		this.player = null;
 		this.timer = 1;
 		this.running = false;
-		this.winManager = VylariaUHCRun.getInstance().getWinManager();
 	}
 
 	@Override
@@ -33,7 +32,8 @@ public class WinScheduler extends BukkitRunnable
 		{
 			stop();
 
-			new WinManager(player).check();
+			winManager = new WinManager(player);
+			winManager.check();
 		}
 	}
 
