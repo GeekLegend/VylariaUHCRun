@@ -52,10 +52,6 @@ public class VylariaUHCRun extends JavaPlugin
     {
         instance = this;
 
-        worldUtils = new WorldUtils();
-        gameManager = new GameManager();
-        gameManager.load();
-
         config = new Config();
         config.create("config");
         config.load("config");
@@ -125,6 +121,10 @@ public class VylariaUHCRun extends JavaPlugin
 
         tablist = new Tablist();
 
+        gameManager = new GameManager();
+        gameManager.load();
+
+        worldUtils = new WorldUtils();
         worldUtils.loadSchematic(new Location(Bukkit.getWorld(config.getDefaultConfig().getString("game.world.name")),
                 config.getDefaultConfig().getDouble("setups.join.spawn.x"),
                 config.getDefaultConfig().getDouble("setups.join.spawn.y") - 1,
