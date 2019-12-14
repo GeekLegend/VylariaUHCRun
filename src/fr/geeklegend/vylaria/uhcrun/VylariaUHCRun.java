@@ -108,10 +108,11 @@ public class VylariaUHCRun extends JavaPlugin
 
         gameState = GameState.WAITING;
 
+        worldUtils = new WorldUtils();
+
         tablist = new Tablist();
 
         gameManager = new GameManager();
-        gameManager.load();
         borderManager = new BorderManager();
         cageManager = new CageManager();
 
@@ -122,8 +123,9 @@ public class VylariaUHCRun extends JavaPlugin
         pvpScheduler = new PvPScheduler();
         startScheduler = new StartScheduler();
         timeScheduler = new TimeScheduler();
+        winScheduler = new WinScheduler();
 
-        worldUtils = new WorldUtils();
+        gameManager.load();
         worldUtils.loadSchematic(new Location(Bukkit.getWorld(config.getDefaultConfig().getString("game.world.name")),
                 config.getDefaultConfig().getDouble("setups.join.spawn.x"),
                 config.getDefaultConfig().getDouble("setups.join.spawn.y") - 1,

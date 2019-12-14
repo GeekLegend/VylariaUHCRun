@@ -44,6 +44,7 @@ public class GameManager
 
     public void load()
     {
+       Bukkit.broadcastMessage("MDR");
         loadBiomes();
 
         worldUtils.changeBiome(getRandomBiome());
