@@ -1,6 +1,5 @@
 package fr.geeklegend.vylaria.uhcrun.schedulers;
 
-import fr.geeklegend.vylaria.uhcrun.VylariaUHCRun;
 import fr.geeklegend.vylaria.uhcrun.game.WinManager;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -10,7 +9,7 @@ public class WinScheduler extends BukkitRunnable
 
 	private Player player;
 
-	private int timer ;
+	private int timer;
 
 	private boolean running;
 

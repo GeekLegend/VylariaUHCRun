@@ -1,6 +1,6 @@
 package fr.geeklegend.vylaria.uhcrun.schedulers;
 
-import fr.geeklegend.vylaria.uhcrun.VylariaUHCRun;
+import fr.geeklegend.vylaria.uhcrun.UHCRun;
 import fr.geeklegend.vylaria.uhcrun.game.GameManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
@@ -13,18 +13,18 @@ public class PvPScheduler extends BukkitRunnable implements IScheduler
 
     private FileConfiguration config;
 
-    private int timer;
+    private static int timer;
 
-    private boolean running;
+    private static boolean running;
 
     private GameManager gameManager;
 
     public PvPScheduler()
     {
-    	this.config = VylariaUHCRun.getInstance().getDefaultConfig();
+    	this.config = UHCRun.getInstance().getConfig();
         this.timer = config.getInt("schedulers.pvp.timer");
         this.running = false;
-        this.gameManager = VylariaUHCRun.getInstance().getGameManager();
+        this.gameManager = UHCRun.getInstance().getGameManager();
     }
 
     @Override
@@ -60,12 +60,12 @@ public class PvPScheduler extends BukkitRunnable implements IScheduler
         timer = config.getInt("schedulers.invincibility.timer");
     }
 
-    public int getTimer()
+    public static int getTimer()
     {
         return timer;
     }
 
-    public boolean isRunning()
+    public static boolean isRunning()
     {
         return running;
     }

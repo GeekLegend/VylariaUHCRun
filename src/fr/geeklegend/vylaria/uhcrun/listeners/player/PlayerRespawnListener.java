@@ -1,6 +1,6 @@
 package fr.geeklegend.vylaria.uhcrun.listeners.player;
 
-import fr.geeklegend.vylaria.uhcrun.VylariaUHCRun;
+import fr.geeklegend.vylaria.uhcrun.UHCRun;
 import fr.geeklegend.vylaria.uhcrun.game.GameManager;
 import fr.geeklegend.vylaria.uhcrun.game.GameState;
 import org.bukkit.Bukkit;
@@ -17,14 +17,11 @@ import java.util.Random;
 public class PlayerRespawnListener implements Listener
 {
 
-	private GameState gameState;
-
 	private GameManager gameManager;
 
 	public PlayerRespawnListener()
 	{
-		this.gameState = VylariaUHCRun.getInstance().getGameState();
-		this.gameManager = VylariaUHCRun.getInstance().getGameManager();
+		this.gameManager = UHCRun.getInstance().getGameManager();
 	}
 
 	@EventHandler
@@ -33,7 +30,7 @@ public class PlayerRespawnListener implements Listener
 		Player player = event.getPlayer();
 		Player killer = player.getKiller();
 
-		if (!gameState.isState(GameState.WAITING))
+		if (!GameState.isState(GameState.WAITING))
 		{
 			if (!gameManager.spectatorsContains(player))
 			{

@@ -1,11 +1,13 @@
 package fr.geeklegend.vylaria.uhcrun.listeners.player;
 
-import fr.geeklegend.vylaria.uhcrun.VylariaUHCRun;
+import fr.geeklegend.vylaria.uhcrun.UHCRun;
 import fr.geeklegend.vylaria.uhcrun.game.GameManager;
 import fr.geeklegend.vylaria.uhcrun.schedulers.WinScheduler;
+import fr.geeklegend.vylaria.uhcrun.utils.ItemBuilder;
 import net.minecraft.server.v1_8_R3.PacketPlayInClientCommand;
 import net.minecraft.server.v1_8_R3.PacketPlayInClientCommand.EnumClientCommand;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
@@ -21,13 +23,10 @@ public class PlayerDeathListener implements Listener
 
 	private GameManager gameManager;
 
-	private WinScheduler winScheduler;
-
 	public PlayerDeathListener()
 	{
-		this.config = VylariaUHCRun.getInstance().getDefaultConfig();
-		this.gameManager = VylariaUHCRun.getInstance().getGameManager();
-		this.winScheduler = VylariaUHCRun.getInstance().getWinScheduler();
+		this.config = UHCRun.getInstance().getConfig();
+		this.gameManager = UHCRun.getInstance().getGameManager();
 	}
 
 	@EventHandler
@@ -35,6 +34,7 @@ public class PlayerDeathListener implements Listener
 	{
 		Player victim = event.getEntity();
 		Player killer = victim.getKiller();
+		WinScheduler winScheduler = new WinScheduler();
 
 		event.setDeathMessage(null);
 
@@ -48,12 +48,14 @@ public class PlayerDeathListener implements Listener
 				{
 					winScheduler.setRunning(true);
 					winScheduler.setPlayer(killer);
-					winScheduler.runTaskTimer(VylariaUHCRun.getInstance(), 20L, 20L);
+					winScheduler.runTaskTimer(UHCRun.getInstance(), 20L, 20L);
 				}
 			}
 
 			if (killer != null)
 			{
+				victim.getWorld().dropItemNaturally(victim.getLocation(), new ItemBuilder(Material.SKULL_ITEM).setDurability((byte) 3).setSkullOwner(victim.getName()).toItemStack());
+
 				if (killer == victim)
 				{
 						Bukkit.broadcastMessage(config.getString("messages.deathnokiller")
@@ -70,7 +72,7 @@ public class PlayerDeathListener implements Listener
 						.replace("%victimname%", victim.getName()));
 			}
 
-			Bukkit.getScheduler().scheduleSyncDelayedTask(VylariaUHCRun.getInstance(), new Runnable()
+			Bukkit.getScheduler().scheduleSyncDelayedTask(UHCRun.getInstance(), new Runnable()
 			{
 				public void run()
 				{

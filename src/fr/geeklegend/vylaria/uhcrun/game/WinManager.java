@@ -1,7 +1,6 @@
 package fr.geeklegend.vylaria.uhcrun.game;
 
-import fr.geeklegend.vylaria.api.VylariaAPI;
-import fr.geeklegend.vylaria.uhcrun.VylariaUHCRun;
+import fr.geeklegend.vylaria.uhcrun.UHCRun;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -19,10 +18,10 @@ public class WinManager
 
 	public WinManager(Player player)
 	{
-		this.config = VylariaUHCRun.getInstance().getDefaultConfig();
+		this.config = UHCRun.getInstance().getConfig();
 		this.player = player;
 		this.gameState = gameState.getState();
-		this.gameManager = VylariaUHCRun.getInstance().getGameManager();
+		this.gameManager = UHCRun.getInstance().getGameManager();
 	}
 
 	public void check()
@@ -35,19 +34,19 @@ public class WinManager
 		Bukkit.broadcastMessage(config.getString("messages.win").replace("&", "§")
 				.replace("%playername%", player.getName()));
 
-		Bukkit.getScheduler().runTaskLater(VylariaUHCRun.getInstance(), new Runnable()
+		Bukkit.getScheduler().runTaskLater(UHCRun.getInstance(), new Runnable()
 		{
 			@Override
 			public void run()
 			{
 				for (Player players : Bukkit.getOnlinePlayers())
 				{
-					VylariaAPI.getInstance().getBungeeChannelApi().connect(players, "lobby");
+					//VylariaUHCRun.getInstance().getBungeeChannelApi().connect(players, "lobby");
 				}
 			}
 		}, 100L);
 
-		Bukkit.getScheduler().runTaskLater(VylariaUHCRun.getInstance(), new Runnable()
+		Bukkit.getScheduler().runTaskLater(UHCRun.getInstance(), new Runnable()
 		{
 			@Override
 			public void run()

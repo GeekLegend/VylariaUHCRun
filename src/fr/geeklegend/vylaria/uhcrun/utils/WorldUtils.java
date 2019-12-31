@@ -1,36 +1,9 @@
 package fr.geeklegend.vylaria.uhcrun.utils;
 
-import com.sk89q.worldedit.EditSession;
-import com.sk89q.worldedit.MaxChangedBlocksException;
-import com.sk89q.worldedit.Vector;
-import com.sk89q.worldedit.WorldEdit;
-import com.sk89q.worldedit.bukkit.BukkitWorld;
-import com.sk89q.worldedit.extent.clipboard.Clipboard;
-import com.sk89q.worldedit.extent.clipboard.io.ClipboardFormat;
-import com.sk89q.worldedit.function.mask.ExistingBlockMask;
-import com.sk89q.worldedit.function.operation.ForwardExtentCopy;
-import com.sk89q.worldedit.function.operation.Operations;
-import com.sk89q.worldedit.math.transform.AffineTransform;
-import com.sk89q.worldedit.regions.Region;
-import com.sk89q.worldedit.world.World;
-import com.sk89q.worldedit.world.registry.WorldData;
-import fr.geeklegend.vylaria.uhcrun.VylariaUHCRun;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.configuration.file.FileConfiguration;
-
 import java.io.*;
-import java.lang.reflect.Field;
 
 public class WorldUtils
 {
-
-    private FileConfiguration config;
-
-    public WorldUtils()
-    {
-        this.config = VylariaUHCRun.getInstance().getDefaultConfig();
-    }
 
     public void copyFolder(File src, File dest) throws IOException
     {
@@ -87,63 +60,6 @@ public class WorldUtils
             }
         }
         return (path.delete());
-    }
-
-    public void changeBiome(String biome)
-    {
-        try
-        {
-            String mojangPath = "net.minecraft.server."
-                    + Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3];
-            Class<?> clazz = Class.forName(mojangPath + ".BiomeBase");
-
-            Field plainsField = clazz.getDeclaredField(biome);
-            plainsField.setAccessible(true);
-            Object plainsBiome = plainsField.get(null);
-
-            Field biomesField = clazz.getDeclaredField("biomes");
-            biomesField.setAccessible(true);
-            Object[] biomes = (Object[]) biomesField.get(null);
-
-            for (int i = 0; i < biomes.length; i++)
-            {
-                biomes[i] = plainsBiome;
-            }
-            biomesField.set(null, biomes);
-        } catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-    }
-
-    public void loadSchematic(Location location, String name, boolean ignoreAirBlocks)
-    {
-        File file = new File("./plugins/WorldEdit/schematics/" + name + ".schematic");
-        Vector to = new Vector(location.getX(), location.getY(), location.getZ());
-        World weWorld = new BukkitWorld(Bukkit.getWorld(config.getString("game.world.name")));
-        WorldData worldData = weWorld.getWorldData();
-        try
-        {
-            Clipboard clipboard = ClipboardFormat.SCHEMATIC.getReader(new FileInputStream(file)).read(worldData);
-            Region region = clipboard.getRegion();
-            EditSession extent = WorldEdit.getInstance().getEditSessionFactory().getEditSession(weWorld, -1);
-            AffineTransform transform = new AffineTransform();
-            ForwardExtentCopy copy = new ForwardExtentCopy(clipboard, clipboard.getRegion(), clipboard.getOrigin(),
-                    extent, to);
-            if (!transform.isIdentity())
-            {
-                copy.setTransform(transform);
-            }
-            if (ignoreAirBlocks)
-            {
-                copy.setSourceMask(new ExistingBlockMask(clipboard));
-            }
-            Operations.completeLegacy(copy);
-            extent.flushQueue();
-        } catch (IOException | MaxChangedBlocksException e)
-        {
-            e.printStackTrace();
-        }
     }
 
 }

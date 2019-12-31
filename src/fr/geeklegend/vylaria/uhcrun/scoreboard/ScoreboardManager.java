@@ -1,6 +1,6 @@
 package fr.geeklegend.vylaria.uhcrun.scoreboard;
 
-import fr.geeklegend.vylaria.uhcrun.VylariaUHCRun;
+import fr.geeklegend.vylaria.uhcrun.UHCRun;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
@@ -40,17 +40,17 @@ public class ScoreboardManager
 		ipCharIndex = 0;
 		cooldown = 0;
 
-		glowingTask = VylariaUHCRun.getInstance().getScheduledExecutorService().scheduleAtFixedRate(() ->
+		glowingTask = UHCRun.getInstance().getScheduledExecutorService().scheduleAtFixedRate(() ->
 		{
 			String ip = colorIpAt();
 			for (PersonalScoreboard scoreboard : scoreboards.values())
-				VylariaUHCRun.getInstance().getExecutorMonoThread().execute(() -> scoreboard.setLines(ip));
+				UHCRun.getInstance().getExecutorMonoThread().execute(() -> scoreboard.setLines(ip));
 		}, 80, 80, TimeUnit.MILLISECONDS);
 
-		reloadingTask = VylariaUHCRun.getInstance().getScheduledExecutorService().scheduleAtFixedRate(() ->
+		reloadingTask = UHCRun.getInstance().getScheduledExecutorService().scheduleAtFixedRate(() ->
 		{
 			for (PersonalScoreboard scoreboard : scoreboards.values())
-				VylariaUHCRun.getInstance().getExecutorMonoThread().execute(scoreboard::reloadData);
+				UHCRun.getInstance().getExecutorMonoThread().execute(scoreboard::reloadData);
 		}, 1, 1, TimeUnit.SECONDS);
 	}
 

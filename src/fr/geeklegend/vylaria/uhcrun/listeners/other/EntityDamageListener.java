@@ -1,6 +1,6 @@
 package fr.geeklegend.vylaria.uhcrun.listeners.other;
 
-import fr.geeklegend.vylaria.uhcrun.VylariaUHCRun;
+import fr.geeklegend.vylaria.uhcrun.UHCRun;
 import fr.geeklegend.vylaria.uhcrun.game.GameManager;
 import fr.geeklegend.vylaria.uhcrun.game.GameState;
 import fr.geeklegend.vylaria.uhcrun.schedulers.InvincibilityScheduler;
@@ -15,19 +15,11 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 public class EntityDamageListener implements Listener
 {
 
-	private GameState gameState;
-
 	private GameManager gameManager;
-
-	private InvincibilityScheduler invincibilityScheduler;
-	private PvPScheduler pvpScheduler;
 
 	public EntityDamageListener()
 	{
-		this.gameState = VylariaUHCRun.getInstance().getGameState();
-		this.gameManager = VylariaUHCRun.getInstance().getGameManager();
-		this.invincibilityScheduler = VylariaUHCRun.getInstance().getInvincibilityScheduler();
-		this.pvpScheduler = VylariaUHCRun.getInstance().getPvpScheduler();
+		this.gameManager = UHCRun.getInstance().getGameManager();
 	}
 
 	@EventHandler
@@ -36,12 +28,12 @@ public class EntityDamageListener implements Listener
 		Entity entity = event.getEntity();
 		DamageCause damageCause = event.getCause();
 
-		if (gameState.isState(GameState.WAITING) || gameState.isState(GameState.PREGAME))
+		if (GameState.isState(GameState.WAITING) || GameState.isState(GameState.PREGAME))
 		{
 			event.setCancelled(true);
-		} else if (gameState.isState(GameState.GAME))
+		} else if (GameState.isState(GameState.GAME))
 		{
-			if (invincibilityScheduler.isRunning())
+			if (InvincibilityScheduler.isRunning())
 			{
 				event.setCancelled(true);
 			} else
@@ -59,7 +51,7 @@ public class EntityDamageListener implements Listener
 					return;
 				} else
 				{
-					if (pvpScheduler.isRunning())
+					if (PvPScheduler.isRunning())
 					{
 						event.setCancelled(true);
 					} 

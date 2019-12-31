@@ -1,6 +1,6 @@
 package fr.geeklegend.vylaria.uhcrun.scoreboard;
 
-import fr.geeklegend.vylaria.uhcrun.VylariaUHCRun;
+import fr.geeklegend.vylaria.uhcrun.UHCRun;
 import fr.geeklegend.vylaria.uhcrun.game.BorderManager;
 import fr.geeklegend.vylaria.uhcrun.game.GameManager;
 import fr.geeklegend.vylaria.uhcrun.game.GameState;
@@ -41,11 +41,6 @@ public class PersonalScoreboard
 	private GameManager gameManager;
 	private BorderManager borderManager;
 
-	private StartScheduler startScheduler;
-	private TimeScheduler timeScheduler;
-	private PvPScheduler pvpScheduler;
-	private BorderTimeScheduler borderTimeScheduler;
-
 	public PersonalScoreboard(Player player)
 	{
 		this.setPlayer(player);
@@ -55,15 +50,8 @@ public class PersonalScoreboard
 		reloadData();
 		objectiveSign.addReceiver(player);
 
-		this.gameState = VylariaUHCRun.getInstance().getGameState();
-
-		this.gameManager = VylariaUHCRun.getInstance().getGameManager();
-		this.borderManager = VylariaUHCRun.getInstance().getBorderManager();
-
-		this.startScheduler = VylariaUHCRun.getInstance().getStartScheduler();
-		this.timeScheduler = VylariaUHCRun.getInstance().getTimeScheduler();
-		this.pvpScheduler = VylariaUHCRun.getInstance().getPvpScheduler();
-		this.borderTimeScheduler = VylariaUHCRun.getInstance().getBorderTimeScheduler();
+		this.gameManager = UHCRun.getInstance().getGameManager();
+		this.borderManager = UHCRun.getInstance().getBorderManager();
 	}
 
 	public void reloadData()
@@ -72,18 +60,18 @@ public class PersonalScoreboard
 
 	public void setLines(String ip)
 	{
-		if (gameState.isState(GameState.WAITING))
+		if (GameState.isState(GameState.WAITING))
 		{
 			objectiveSign.setDisplayName("§7- §eUHC Run §7-");
 			objectiveSign.setLine(0, "§1§6 ");
 			objectiveSign.setLine(1, "§1§7Joueurs » §a" + Bukkit.getOnlinePlayers().size() + "/" + Bukkit.getMaxPlayers());
 			objectiveSign.setLine(2, "§1§2 ");
-			if (!startScheduler.isRunning())
+			if (!StartScheduler.isRunning())
 			{
 				objectiveSign.setLine(3, "§cEn attente...");
 			} else
 			{
-				objectiveSign.setLine(3, "§e" + startScheduler.getTimer() + " seconde(s)");
+				objectiveSign.setLine(3, "§e" + StartScheduler.getTimer() + " seconde(s)");
 			}
 			objectiveSign.setLine(4, "§1§1 ");
 			objectiveSign.setLine(5, "§7Id §f" + Bukkit.getMotd());
@@ -91,9 +79,9 @@ public class PersonalScoreboard
 			objectiveSign.setLine(7, ip);
 		} else
 		{
-			String timeFormat = new SimpleDateFormat("mm:ss").format(Integer.valueOf(timeScheduler.getTimer() * 1000));
-			String pvpTimeFormat = new SimpleDateFormat("mm:ss").format(Integer.valueOf(pvpScheduler.getTimer() * 1000));
-			String borderTimeFormat = new SimpleDateFormat("mm:ss").format(Integer.valueOf(borderTimeScheduler.getTimer() * 1000));
+			String timeFormat = new SimpleDateFormat("mm:ss").format(Integer.valueOf(TimeScheduler.getTimer() * 1000));
+			String pvpTimeFormat = new SimpleDateFormat("mm:ss").format(Integer.valueOf(PvPScheduler.getTimer() * 1000));
+			String borderTimeFormat = new SimpleDateFormat("mm:ss").format(Integer.valueOf(BorderTimeScheduler.getTimer() * 1000));
 
 			objectiveSign.setDisplayName("§7- §eUHC Run §7| §e" + timeFormat + " §7-");
 			objectiveSign.setLine(0, "§2§6 ");
@@ -118,7 +106,9 @@ public class PersonalScoreboard
 			objectiveSign.setLine(7, "§eBordure:");
 			objectiveSign.setLine(8, " §7Taille » §e" + borderManager.getSize() + "§7 / §e-" + borderManager.getSize());
 			objectiveSign.setLine(9, "§2§4 ");
-			objectiveSign.setLine(10, ip);
+			objectiveSign.setLine(10, "§7Id §f" + Bukkit.getMotd());
+			objectiveSign.setLine(11, "§2§5 ");
+			objectiveSign.setLine(12, ip);
 		}
 		objectiveSign.updateLines();
 	}

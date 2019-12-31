@@ -5,7 +5,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 public class TimeScheduler extends BukkitRunnable implements IScheduler
 {
 	
-	private int timer;
+	private static int timer;
 
 	public TimeScheduler()
 	{
@@ -31,7 +31,7 @@ public class TimeScheduler extends BukkitRunnable implements IScheduler
 		timer = 0;
 	}
 	
-	public int getTimer()
+	public static int getTimer()
 	{
 		return timer;
 	}

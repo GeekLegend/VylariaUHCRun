@@ -1,11 +1,10 @@
 package fr.geeklegend.vylaria.uhcrun.game;
 
-import com.google.common.collect.Lists;
-import fr.geeklegend.vylaria.uhcrun.VylariaUHCRun;
+import fr.geeklegend.vylaria.uhcrun.UHCRun;
 import fr.geeklegend.vylaria.uhcrun.tablist.Tablist;
-import fr.geeklegend.vylaria.uhcrun.utils.WorldUtils;
 import org.bukkit.*;
 import org.bukkit.World.Environment;
+import org.bukkit.block.Block;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -17,42 +16,34 @@ public class GameManager
 
     private FileConfiguration config;
 
-    private List<String> biomes;
-
-    private List<Player> spectators, players;
+    private List<Player> spectators;
+    private List<Player> players;
 
     private Map<Player, Location> previousLocation;
 
-    private boolean isPvP, isBorder;
-
-    private WorldUtils worldUtils;
+    private boolean isPvP;
+    private boolean isBorder;
 
     private Tablist tablist;
 
     public GameManager()
     {
-        this.config = VylariaUHCRun.getInstance().getDefaultConfig();
-        this.biomes = new ArrayList<String>();
+        this.config = UHCRun.getInstance().getConfig();
         this.spectators = new ArrayList<Player>();
         this.players = new ArrayList<Player>();
         this.previousLocation = new HashMap<Player, Location>();
         this.isPvP = false;
         this.isBorder = false;
-        this.worldUtils = VylariaUHCRun.getInstance().getWorldUtils();
-        this.tablist = VylariaUHCRun.getInstance().getTablist();
+        this.tablist = UHCRun.getInstance().getTablist();
     }
 
     public void load()
     {
-       Bukkit.broadcastMessage("MDR");
-        loadBiomes();
-
-        worldUtils.changeBiome(getRandomBiome());
         WorldCreator worldCreator = new WorldCreator(config.getString("game.world.name"));
         worldCreator.environment(Environment.NORMAL);
         worldCreator.type(WorldType.LARGE_BIOMES);
 
-        Bukkit.createWorld(worldCreator);
+        World w = Bukkit.createWorld(worldCreator);
 
         World world = Bukkit.getWorld(config.getString("game.world.name"));
         world.setDifficulty(Difficulty.NORMAL);
@@ -62,8 +53,6 @@ public class GameManager
         world.setGameRuleValue("doDaylightCycle", "false");
 
         clearEntities(world);
-
-        tablist.setHealth();
     }
 
     public void clearEntities(World world)
@@ -74,13 +63,55 @@ public class GameManager
         }
     }
 
-    public void loadBiomes()
+    public void createWaiting()
     {
-        biomes.add("jungle");
-        biomes.add("mountains");
-        biomes.add("desert");
-        biomes.add("savanna");
-        biomes.add("badlands");
+        World world = Bukkit.getWorld(config.getString("game.world.name"));
+        Location minLocation = new Location(world,
+                config.getDouble("setups.join.spawn.x"),
+                config.getDouble("setups.join.spawn.y"),
+                config.getDouble("setups.join.spawn.z"));
+    }
+
+    public void deleteWaiting()
+    {
+        World world = Bukkit.getWorld(config.getString("game.world.name"));
+        Location minLocation = new Location(world,
+                config.getDouble("setups.join.spawn.x"),
+                config.getDouble("setups.join.spawn.y"),
+                config.getDouble("setups.join.spawn.z"));
+        Location maxLocation = new Location(world,
+                config.getDouble("setups.join.spawn.x") - 50,
+                config.getDouble("setups.join.spawn.y") - 50,
+                config.getDouble("setups.join.spawn.z") - 50);
+
+        int minX = Math.min(minLocation.getBlockX(), maxLocation.getBlockX());
+        int minY = Math.min(minLocation.getBlockY(), maxLocation.getBlockY());
+        int minZ = Math.min(minLocation.getBlockZ(), maxLocation.getBlockZ());
+
+        int maxX = Math.max(minLocation.getBlockX(), maxLocation.getBlockX());
+        int maxY = Math.max(minLocation.getBlockY(), maxLocation.getBlockY());
+        int maxZ = Math.max(minLocation.getBlockZ(), maxLocation.getBlockZ());
+
+        for (int x = minX; x <= maxX; x++)
+        {
+            for (int y = minY; y <= maxY; y++)
+            {
+                for (int z = minZ; z <= maxZ; z++)
+                {
+                    Block block = world.getBlockAt(x, y, z);
+
+                    if (block.getType() == Material.STAINED_GLASS)
+                    {
+                        block.setType(Material.AIR);
+
+                        for (Entity entity : world.getEntities())
+                        {
+                            entity.remove();
+                        }
+                    }
+                }
+            }
+        }
     }
 
     public void preGameSetup()
@@ -121,20 +152,7 @@ public class GameManager
             players.teleport(location);
 
             addPreviousLocation(players, location);
-
-            worldUtils.loadSchematic(
-                    new Location(Bukkit.getWorld(config.getString("game.world.name")), x, y, z),
-                    "uhcwtfsolocage", true);
         }
-    }
-
-    public String getRandomBiome()
-    {
-        List<String> givenList = Lists.newArrayList(biomes);
-        int randomIndex = new Random().nextInt(givenList.size());
-        String randomBiome = givenList.get(randomIndex);
-        givenList.remove(randomIndex);
-        return randomBiome;
     }
 
     public void addPlayer(Player player)

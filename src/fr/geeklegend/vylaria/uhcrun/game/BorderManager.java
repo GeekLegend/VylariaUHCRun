@@ -1,6 +1,6 @@
 package fr.geeklegend.vylaria.uhcrun.game;
 
-import fr.geeklegend.vylaria.uhcrun.VylariaUHCRun;
+import fr.geeklegend.vylaria.uhcrun.UHCRun;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.WorldBorder;
@@ -19,7 +19,7 @@ public class BorderManager
 
     public BorderManager()
     {
-        this.config = VylariaUHCRun.getInstance().getDefaultConfig();
+        this.config = UHCRun.getInstance().getConfig();
         this.worldBorder = null;
         this.size = config.getInt("game.world.size");
         this.isMoved = false;

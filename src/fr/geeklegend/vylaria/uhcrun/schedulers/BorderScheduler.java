@@ -1,6 +1,6 @@
 package fr.geeklegend.vylaria.uhcrun.schedulers;
 
-import fr.geeklegend.vylaria.uhcrun.VylariaUHCRun;
+import fr.geeklegend.vylaria.uhcrun.UHCRun;
 import fr.geeklegend.vylaria.uhcrun.game.BorderManager;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -14,7 +14,7 @@ public class BorderScheduler extends BukkitRunnable implements IScheduler
 	public BorderScheduler()
 	{
 		this.timer = 0;
-		this.borderManager = VylariaUHCRun.getInstance().getBorderManager();
+		this.borderManager = UHCRun.getInstance().getBorderManager();
 	}
 
 	@Override

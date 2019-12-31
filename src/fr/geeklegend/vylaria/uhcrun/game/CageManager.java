@@ -1,7 +1,7 @@
 package fr.geeklegend.vylaria.uhcrun.game;
 
-import fr.geeklegend.vylaria.api.cuboid.Cuboid;
-import fr.geeklegend.vylaria.uhcrun.VylariaUHCRun;
+import fr.geeklegend.vylaria.uhcrun.UHCRun;
+import fr.geeklegend.vylaria.uhcrun.utils.Cuboid;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -14,12 +14,13 @@ public class CageManager
 
     private FileConfiguration config;
 
-    public Cuboid WAITING_CAGE_CUBOID, PREGAME_CAGE_CUBOID;
+    public Cuboid waitingCageCuboid;
+    public Cuboid preGameCageCuboid;
 
     public CageManager()
     {
-        this.config = VylariaUHCRun.getInstance().getDefaultConfig();
-        this.WAITING_CAGE_CUBOID = new Cuboid(
+        this.config = UHCRun.getInstance().getConfig();
+        this.waitingCageCuboid = new Cuboid(
                 new Location(Bukkit.getWorld(config.getString("game.world.name")),
                         config.getDouble("setups.join.spawn.x") + 30,
                         config.getDouble("setups.join.spawn.y") + 30,
@@ -28,14 +29,14 @@ public class CageManager
                         config.getDouble("setups.join.spawn.x") - 30,
                         config.getDouble("setups.join.spawn.y") - 30,
                         config.getDouble("setups.join.spawn.z") - 30));
-        this.PREGAME_CAGE_CUBOID = null;
+        this.preGameCageCuboid = null;
     }
 
     public void remove(boolean waiting)
     {
         if (waiting)
         {
-            for (Block blocks : WAITING_CAGE_CUBOID.getBlocks())
+            for (Block blocks : waitingCageCuboid.getBlocks())
             {
                 if (blocks.getType() == Material.STAINED_GLASS)
                 {
@@ -46,13 +47,13 @@ public class CageManager
         {
             for (Player players : Bukkit.getOnlinePlayers())
             {
-                PREGAME_CAGE_CUBOID = new Cuboid(
+                preGameCageCuboid = new Cuboid(
                         new Location(players.getWorld(), players.getLocation().getBlockX() + 10,
                                 players.getLocation().getBlockY() + 10, players.getLocation().getBlockZ() + 10),
                         new Location(players.getWorld(), players.getLocation().getBlockX() - 10,
                                 players.getLocation().getBlockY() - 10, players.getLocation().getBlockZ() - 10));
 
-                for (Block blocks : PREGAME_CAGE_CUBOID.getBlocks())
+                for (Block blocks : preGameCageCuboid.getBlocks())
                 {
                     if (blocks.getType() == Material.STAINED_GLASS)
                     {

@@ -1,6 +1,6 @@
 package fr.geeklegend.vylaria.uhcrun.listeners.player;
 
-import fr.geeklegend.vylaria.uhcrun.VylariaUHCRun;
+import fr.geeklegend.vylaria.uhcrun.UHCRun;
 import fr.geeklegend.vylaria.uhcrun.game.GameManager;
 import fr.geeklegend.vylaria.uhcrun.game.GameState;
 import org.bukkit.entity.Player;
@@ -11,28 +11,28 @@ import org.bukkit.event.player.PlayerMoveEvent;
 public class PlayerMoveListener implements Listener
 {
 
-	private GameState gameState;
+    private GameManager gameManager;
 
-	private GameManager gameManager;
+    public PlayerMoveListener()
+    {
+        this.gameManager = UHCRun.getInstance().getGameManager();
+    }
 
-	public PlayerMoveListener()
-	{
-		this.gameState = VylariaUHCRun.getInstance().getGameState();
-		this.gameManager = VylariaUHCRun.getInstance().getGameManager();
-	}
+    @EventHandler
+    public void onPlayerMove(PlayerMoveEvent event)
+    {
+        Player player = event.getPlayer();
 
-	@EventHandler
-	public void onPlayerMove(PlayerMoveEvent event)
-	{
-		Player player = event.getPlayer();
-
-		if (gameState.isState(GameState.WAITING) || gameState.isState(GameState.PREGAME))
-		{
+        if (GameState.isState(GameState.FINISH))
+        {
+            return;
+        } else
+        {
 			if (player.getLocation().getY() < 140)
 			{
 				player.teleport(gameManager.getPreviousLocation(player));
 			}
-		}
-	}
+        }
+    }
 
 }

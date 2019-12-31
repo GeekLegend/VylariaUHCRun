@@ -1,7 +1,6 @@
 package fr.geeklegend.vylaria.uhcrun.listeners.player;
 
-import fr.geeklegend.vylaria.api.mysql.data.manager.PlayerDataManager;
-import fr.geeklegend.vylaria.uhcrun.VylariaUHCRun;
+import fr.geeklegend.vylaria.uhcrun.UHCRun;
 import fr.geeklegend.vylaria.uhcrun.game.GameManager;
 import fr.geeklegend.vylaria.uhcrun.game.GameState;
 import org.bukkit.Bukkit;
@@ -16,15 +15,12 @@ public class PlayerQuitListener implements Listener
 
 	private FileConfiguration config;
 
-	private GameState gameState;
-
 	private GameManager gameManager;
 
 	public PlayerQuitListener()
 	{
-		this.config = VylariaUHCRun.getInstance().getDefaultConfig();
-		this.gameState = VylariaUHCRun.getInstance().getGameState();
-		this.gameManager = VylariaUHCRun.getInstance().getGameManager();
+		this.config = UHCRun.getInstance().getConfig();
+		this.gameManager = UHCRun.getInstance().getGameManager();
 	}
 
 	@EventHandler
@@ -32,11 +28,9 @@ public class PlayerQuitListener implements Listener
 	{
 		Player player = event.getPlayer();
 	
-		PlayerDataManager.savePlayerData(player);
+		UHCRun.getInstance().getScoreboardManager().onLogout(player);
 		
-		VylariaUHCRun.getInstance().getScoreboardManager().onLogout(player);
-		
-		if (!gameState.isState(GameState.GAME))
+		if (!GameState.isState(GameState.GAME))
 		{
 			event.setQuitMessage(config.getString("messages.quit").replace("&", "§")
 					.replace("%playername%", player.getName())

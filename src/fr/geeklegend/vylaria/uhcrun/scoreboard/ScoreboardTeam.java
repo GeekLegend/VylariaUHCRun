@@ -1,11 +1,11 @@
 package fr.geeklegend.vylaria.uhcrun.scoreboard;
 
-import java.lang.reflect.Field;
-import java.util.List;
-
 import net.minecraft.server.v1_8_R3.EntityPlayer;
 import net.minecraft.server.v1_8_R3.PacketPlayOutPlayerInfo;
 import net.minecraft.server.v1_8_R3.PacketPlayOutScoreboardTeam;
+
+import java.lang.reflect.Field;
+import java.util.List;
 
 public class ScoreboardTeam {
 

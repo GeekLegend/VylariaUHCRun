@@ -1,6 +1,6 @@
 package fr.geeklegend.vylaria.uhcrun.schedulers;
 
-import fr.geeklegend.vylaria.uhcrun.VylariaUHCRun;
+import fr.geeklegend.vylaria.uhcrun.UHCRun;
 import fr.geeklegend.vylaria.uhcrun.game.BorderManager;
 import fr.geeklegend.vylaria.uhcrun.game.CageManager;
 import fr.geeklegend.vylaria.uhcrun.game.GameManager;
@@ -9,6 +9,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class StartScheduler extends BukkitRunnable implements IScheduler
@@ -16,11 +18,9 @@ public class StartScheduler extends BukkitRunnable implements IScheduler
 
 	private FileConfiguration config;
 
-	private int timer;
+	private static int timer;
 
-	private boolean running;
-
-	private GameState gameState;
+	private static boolean running;
 
 	private BorderManager borderManager;
 	private CageManager cageManager;
@@ -28,13 +28,12 @@ public class StartScheduler extends BukkitRunnable implements IScheduler
 
 	public StartScheduler()
 	{
-		this.config = VylariaUHCRun.getInstance().getDefaultConfig();
+		this.config = UHCRun.getInstance().getConfig();
 		this.timer = config.getInt("schedulers.start.timer");
 		this.running = false;
-		this.gameState = VylariaUHCRun.getInstance().getGameState();
-		this.borderManager = VylariaUHCRun.getInstance().getBorderManager();
-		this.cageManager = VylariaUHCRun.getInstance().getCageManager();
-		this.gameManager = VylariaUHCRun.getInstance().getGameManager();
+		this.gameManager = UHCRun.getInstance().getGameManager();
+		this.borderManager = UHCRun.getInstance().getBorderManager();
+		this.cageManager = UHCRun.getInstance().getCageManager();
 	}
 
 	@Override
@@ -55,17 +54,19 @@ public class StartScheduler extends BukkitRunnable implements IScheduler
 		{
 			stop();
 
-			gameState.setState(GameState.PREGAME);
+			GameState.setState(GameState.PREGAME);
 
 			borderManager.load();
 
 			cageManager.remove(true);
 
-			new CageScheduler().runTaskTimer(VylariaUHCRun.getInstance(), 20L, 20L);
+			new CageScheduler().runTaskTimer(UHCRun.getInstance(), 20L, 20L);
 
 			for (Player players : Bukkit.getOnlinePlayers())
 			{
 				gameManager.removePreviousLocation(players);
+
+				players.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 1200, 1));
 			}
 
 			gameManager.preGameSetup();
@@ -80,7 +81,7 @@ public class StartScheduler extends BukkitRunnable implements IScheduler
 		{
 			stop();
 
-			gameState.setState(GameState.WAITING);
+			GameState.setState(GameState.WAITING);
 
 			Bukkit.broadcastMessage(
 					config.getString("messages.schedulers.start.noenought").replace("&", "§"));
@@ -101,12 +102,12 @@ public class StartScheduler extends BukkitRunnable implements IScheduler
 		timer = config.getInt("schedulers.start.timer");
 	}
 
-	public int getTimer()
+	public static int getTimer()
 	{
 		return timer;
 	}
 
-	public boolean isRunning()
+	public static boolean isRunning()
 	{
 		return running;
 	}

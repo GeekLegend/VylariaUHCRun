@@ -1,0 +1,49 @@
+messages:
+  join: "&e%playername% &7a rejoint la partie. &e(%online%/%maxonline%)."
+  quit: "&e%playername% &7a quitté la partie. &e(%online%/%maxonline%)."
+  alreadystart: "&7La partie à déja commencer, vous avez rejoint en tant que spectateur."
+  invincibility:
+    start: "&7Vous êtes invincible pendant &e%timer% secondes."
+    while: "&7Vous êtes vulnérable dans &e%timer% seconde(s)."
+    disabled: "&7Vous êtes désormais vulnérable."
+  pvp: "&7Les dégâts entre joueurs sont désormais actifs."
+  border: "&7La bordure commence à se rétracter."
+  deathbykiller: "&e%victimname% §7a été tué par &c%killername%."
+  deathnokiller: "&e%victimname% §7est mort."
+  win: "&7Le joueur &e%playername% &7a remporter la victoire !"
+  schedulers:
+    start:
+      while: "&7La partie commence dans &e%timer% seconde(s)."
+      noenought: "&cIl n'y a pas assez de joueur pour commencer la partie."
+schedulers:
+  start:
+    minplayers: 1
+    timer: 30
+  cages:
+    timer: 5
+  invincibility:
+    timer: 30
+  pvp:
+    timer: 300
+  border:
+    timer: 900
+game:
+  world:
+    name: "world"
+    size: 800.0
+setups:
+  join:
+    gamemode: "adventure"
+    spawn:
+      x: 0.5
+      y: 150.0
+      z: 0.5
+      yaw: 180
+      pitch: 0
+    items:
+      leave:
+        slot: 8
+        material: "bed"
+        name: "&6Quitter"
+  game:
+    gamemode: "survival"

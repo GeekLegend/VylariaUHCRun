@@ -1,6 +1,6 @@
 package fr.geeklegend.vylaria.uhcrun.schedulers;
 
-import fr.geeklegend.vylaria.uhcrun.VylariaUHCRun;
+import fr.geeklegend.vylaria.uhcrun.UHCRun;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -14,11 +14,11 @@ public class InvincibilityScheduler extends BukkitRunnable implements IScheduler
 
 	private int timer;
 
-	private boolean running;
+	private static boolean running;
 
 	public InvincibilityScheduler()
 	{
-		this.config = VylariaUHCRun.getInstance().getDefaultConfig();
+		this.config = UHCRun.getInstance().getConfig();
 		this.timer = config.getInt("schedulers.invincibility.timer");
 		this.running = false;
 	}
@@ -64,7 +64,7 @@ public class InvincibilityScheduler extends BukkitRunnable implements IScheduler
 		return timer;
 	}
 
-	public boolean isRunning()
+	public static boolean isRunning()
 	{
 		return running;
 	}

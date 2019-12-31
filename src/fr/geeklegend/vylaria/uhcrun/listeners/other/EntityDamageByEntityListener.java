@@ -1,6 +1,6 @@
 package fr.geeklegend.vylaria.uhcrun.listeners.other;
 
-import fr.geeklegend.vylaria.uhcrun.VylariaUHCRun;
+import fr.geeklegend.vylaria.uhcrun.UHCRun;
 import fr.geeklegend.vylaria.uhcrun.game.GameManager;
 import fr.geeklegend.vylaria.uhcrun.game.GameState;
 import org.bukkit.entity.Arrow;
@@ -15,14 +15,11 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 public class EntityDamageByEntityListener implements Listener
 {
 
-	private GameState gameState;
-
 	private GameManager gameManager;
 
 	public EntityDamageByEntityListener()
 	{
-		this.gameState = VylariaUHCRun.getInstance().getGameState();
-		this.gameManager = VylariaUHCRun.getInstance().getGameManager();
+		this.gameManager = UHCRun.getInstance().getGameManager();
 	}
 
 	@EventHandler
@@ -32,7 +29,7 @@ public class EntityDamageByEntityListener implements Listener
 		Entity damager = event.getDamager();
 		DamageCause damageCause = event.getCause();
 
-		if (!gameState.isState(GameState.WAITING))
+		if (!GameState.isState(GameState.WAITING))
 		{
 			if (!gameManager.isPvP())
 			{

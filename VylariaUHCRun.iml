@@ -14,29 +14,22 @@
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
     </content>
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="inheritedJdk" />
+    <orderEntry type="jdk" jdkName="1.8" jdkType="JavaSDK" />
     <orderEntry type="module-library">
-      <library name="VylariaAPI.jar">
+      <library>
         <CLASSES>
-          <root url="jar://$USER_HOME$/Desktop/DEV/localsservers/1.8.8/plugins/VylariaAPI.jar!/" />
+          <root url="jar://$USER_HOME$/Desktop/DEV/localsservers/build/spigot.jar!/" />
         </CLASSES>
         <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library name="PaperSpigot-1.8.8-R0.1-SNAPSHOT-latest.jar">
-        <CLASSES>
-          <root url="jar://$USER_HOME$/Downloads/PaperSpigot-1.8.8-R0.1-SNAPSHOT-latest.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/Desktop/DEV/localsservers/build/spigot.jar!/" />
+        </SOURCES>
       </library>
     </orderEntry>
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$USER_HOME$/Desktop/DEV/localsservers/1.8.8/WorldEdit.jar!/" />
+          <root url="jar://$USER_HOME$/Desktop/DEV/utils/minimal-json-0.9.5.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

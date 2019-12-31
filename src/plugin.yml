@@ -1,4 +1,4 @@
-name: VylariaUHCRun
+name: UHCRun
 version: 1.0
 author: GeekLegend
-main: fr.geeklegend.vylaria.uhcrun.VylariaUHCRun
+main: fr.geeklegend.vylaria.uhcrun.UHCRun

@@ -8,19 +8,19 @@ public enum GameState
 	GAME,
 	FINISH;
 	
-	private GameState current;
+	private static GameState current;
 	
-	public GameState getState()
+	public static GameState getState()
 	{
 		return current;
 	}
 	
-	public boolean isState(GameState state)
+	public static boolean isState(GameState state)
 	{
 		return current == state;
 	}
 	
-	public void setState(GameState state)
+	public static void setState(GameState state)
 	{
 		current = state;
 	}

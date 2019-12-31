@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="uhcrun:jar">
+    <output-path>$USER_HOME$/Desktop/DEV/localsservers/1.8.8/plugins</output-path>
+    <root id="archive" name="uhcrun.jar">
+      <element id="module-output" name="VylariaUHCRun" />
+    </root>
+  </artifact>
+</component>

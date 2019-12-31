@@ -1,6 +1,6 @@
 package fr.geeklegend.vylaria.uhcrun.config;
 
-import fr.geeklegend.vylaria.uhcrun.VylariaUHCRun;
+import fr.geeklegend.vylaria.uhcrun.UHCRun;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -19,11 +19,11 @@ public class Config
 
     public void create(String fileName)
     {
-        if (!VylariaUHCRun.getInstance().getDataFolder().exists())
+        if (!UHCRun.getInstance().getDataFolder().exists())
         {
-            VylariaUHCRun.getInstance().getDataFolder().mkdir();
+            UHCRun.getInstance().getDataFolder().mkdir();
         }
-        File file = new File(VylariaUHCRun.getInstance().getDataFolder(), fileName + ".yml");
+        File file = new File(UHCRun.getInstance().getDataFolder(), fileName + ".yml");
         if (!file.exists())
         {
             try
@@ -54,7 +54,7 @@ public class Config
 
     public File getFile(String fileName)
     {
-        return new File(VylariaUHCRun.getInstance().getDataFolder(), fileName + ".yml");
+        return new File(UHCRun.getInstance().getDataFolder(), fileName + ".yml");
     }
 
     public FileConfiguration getDefaultConfig()

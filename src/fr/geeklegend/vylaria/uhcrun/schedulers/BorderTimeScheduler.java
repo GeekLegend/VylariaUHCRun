@@ -1,6 +1,6 @@
 package fr.geeklegend.vylaria.uhcrun.schedulers;
 
-import fr.geeklegend.vylaria.uhcrun.VylariaUHCRun;
+import fr.geeklegend.vylaria.uhcrun.UHCRun;
 import fr.geeklegend.vylaria.uhcrun.game.BorderManager;
 import fr.geeklegend.vylaria.uhcrun.game.GameManager;
 import org.bukkit.Bukkit;
@@ -12,20 +12,20 @@ public class BorderTimeScheduler extends BukkitRunnable implements IScheduler
 
 	private FileConfiguration config;
 	
-	private int timer;
+	private static int timer;
 
 	private boolean running;
 
 	private GameManager gameManager;
 	private BorderManager borderManager;
 
-	public void BorderTimeScheduler()
+	public BorderTimeScheduler()
 	{
-		this.config = VylariaUHCRun.getInstance().getDefaultConfig();
+		this.config = UHCRun.getInstance().getConfig();
 		this.timer = config.getInt("schedulers.border.timer");
 		this.running = false;
-		this.gameManager = VylariaUHCRun.getInstance().getGameManager();
-		this.borderManager = VylariaUHCRun.getInstance().getBorderManager();
+		this.gameManager = UHCRun.getInstance().getGameManager();
+		this.borderManager = UHCRun.getInstance().getBorderManager();
 	}
 
 	@Override
@@ -40,7 +40,7 @@ public class BorderTimeScheduler extends BukkitRunnable implements IScheduler
 			gameManager.setBorder(true);
 			borderManager.setMoved(true);
 
-			new BorderScheduler().runTaskTimer(VylariaUHCRun.getInstance(), 20L, 20L);
+			new BorderScheduler().runTaskTimer(UHCRun.getInstance(), 20L, 20L);
 			
 			Bukkit.broadcastMessage(config.getString("messages.border").replace("&", "§"));
 		}
@@ -60,7 +60,7 @@ public class BorderTimeScheduler extends BukkitRunnable implements IScheduler
 		timer = config.getInt("schedulers.border.timer");
 	}
 	
-	public int getTimer()
+	public static int getTimer()
 	{
 		return timer;
 	}

@@ -1,6 +1,6 @@
 package fr.geeklegend.vylaria.uhcrun.schedulers;
 
-import fr.geeklegend.vylaria.uhcrun.VylariaUHCRun;
+import fr.geeklegend.vylaria.uhcrun.UHCRun;
 import fr.geeklegend.vylaria.uhcrun.game.CageManager;
 import fr.geeklegend.vylaria.uhcrun.game.GameManager;
 import fr.geeklegend.vylaria.uhcrun.game.GameState;
@@ -16,19 +16,16 @@ public class CageScheduler extends BukkitRunnable implements IScheduler
 
 	private int timer;
 
-	private GameState gameState;
-
 	private GameManager gameManager;
 
 	private CageManager cageManager;
 
-	public void CageScheduler()
+	public CageScheduler()
 	{
-		this.config = VylariaUHCRun.getInstance().getDefaultConfig();
+		this.config = UHCRun.getInstance().getConfig();
 		this.timer = config.getInt("schedulers.cages.timer");
-		this.gameState = VylariaUHCRun.getInstance().getGameState();
-		this.gameManager = VylariaUHCRun.getInstance().getGameManager();
-		this.cageManager = VylariaUHCRun.getInstance().getCageManager();
+		this.gameManager = UHCRun.getInstance().getGameManager();
+		this.cageManager = UHCRun.getInstance().getCageManager();
 	}
 
 	@Override
@@ -40,7 +37,7 @@ public class CageScheduler extends BukkitRunnable implements IScheduler
 		{
 			stop();
 
-			gameState.setState(GameState.GAME);
+			GameState.setState(GameState.GAME);
 			
 			cageManager.remove(false);
 
@@ -53,17 +50,17 @@ public class CageScheduler extends BukkitRunnable implements IScheduler
 
 			gameManager.gameSetup();
 
-			new TimeScheduler().runTaskTimer(VylariaUHCRun.getInstance(), 20L, 20);
+			new TimeScheduler().runTaskTimer(UHCRun.getInstance(), 20L, 20);
 			
 			InvincibilityScheduler invincibilityScheduler = new InvincibilityScheduler();
 			invincibilityScheduler.setRunning(true);
-			invincibilityScheduler.runTaskTimer(VylariaUHCRun.getInstance(), 20L, 20L);
+			invincibilityScheduler.runTaskTimer(UHCRun.getInstance(), 20L, 20L);
 			
 			PvPScheduler pvpScheduler = new PvPScheduler();
 			pvpScheduler.setRunning(true);
-			pvpScheduler.runTaskTimer(VylariaUHCRun.getInstance(), 20L, 20L);
+			pvpScheduler.runTaskTimer(UHCRun.getInstance(), 20L, 20L);
 			
-			new BorderTimeScheduler().runTaskTimer(VylariaUHCRun.getInstance(), 20L, 20L);
+			new BorderTimeScheduler().runTaskTimer(UHCRun.getInstance(), 20L, 20L);
 			
 			Bukkit.broadcastMessage(config.getString("messages.invincibility.start").replace("&", "§")
 					.replace("%timer%", "" + invincibilityScheduler.getTimer()));
